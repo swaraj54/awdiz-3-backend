@@ -36,9 +36,9 @@ app.post('/register', async function (req, res) {
         name: name,
         surname: surname,
         age: parseInt(age),
-        email,
+        email: email,
         number: parseInt(number),
-        password
+        password: password
     })
 
     // console.log(user,"user")
@@ -49,10 +49,72 @@ app.post('/register', async function (req, res) {
 
 })
 
+app.get("/find", async (req, res) => {
+    const { email } = req.body;
+    if (!email) return res.send("Email is required")
+
+
+    const user = await User.find({ email: email }).select("-password")
+    console.log(user, "users list here")
+    if (user.length) {
+        return res.send(user[0])
+    }
+    return res.send("No user found.")
+    // const user = await User.find({ email: email })
+    // return [{}]
+    // const user = await User.findById(swaraj)
+    // return {}
+    // const user = await User.findOne({name : "Swaraj"})
+    // return {}
+})
+
+app.patch("/update/:id", async (req, res) => {
+    const { age, number } = req.body;
+    const { id } = req.params;
+
+    if (!id) return res.send("id is required..")
+    if (!age) return res.send("age is required..")
+    if (!number) return res.send("number is required..")
+
+    const updatedUser = await User.findByIdAndUpdate(id, { age, number }, { new: true }).select("-password")
+
+    return res.json({ message: "Data updated...", data: updatedUser })
+})
+
+
+app.delete("/delete", async function (req, res) {
+    const { id, name } = req.query;
+    if (!id) return res.send("Id is required...")
+
+    const deletedUser = await User.findByIdAndDelete(id)
+    return res.json({ message: "User deleted", data: deletedUser })
+})
+
+
+
 mongoose.connect(process.env.MONGO_URL).then(() => {
     console.log("Connected to DB..")
 })
 
-app.listen(8000, () => {
+app.listen(8001, () => {
     console.log("Listening on port 8000");
 })
+
+
+
+// const {state} = useContext(AuthContext);
+
+
+// const response = await axios.post("/register", { name, surname, age })
+// const { name, surname, age } = req.body
+
+// const response = await axios.post('/regiter/${state.user._id}') - frontend
+
+// app.post('/regiter/:id')
+// const { id } = req.params
+
+// req.query
+// const url = `/regiter/?name=${name}&surname=jadhav`
+// const response = await axios.post(url)\
+
+// const { name,surname } = req.params
