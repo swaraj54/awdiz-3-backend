@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { Login, Register, getCurrentUser } from './controllers/User.controller.js';
 import { addProduct, allProducts, deleteYourProduct, getYourProducts, updateYourProduct } from './controllers/Product.controller.js';
 import { checkSeller } from './Middlewares/Seller.Middleware.js';
-import { addCart, getCartProducts } from './controllers/Buyer.controllers.js';
+import { addCart, addWishlist, getCartProducts, getWishlistProducts } from './controllers/Buyer.controllers.js';
 
 const app = express();
 app.use(express.json())
@@ -28,8 +28,8 @@ app.get("/all-products", allProducts)
 //buyer 
 
 
-// app.post("/add-wishlist", addWishlist)
-// app.get("/get-wishlist-products", getWishlistProducts)
+app.post("/add-wishlist", addWishlist)
+app.get("/get-wishlist-products", getWishlistProducts)
 
 app.post("/add-cart", addCart)
 app.get("/get-cart-products", getCartProducts)

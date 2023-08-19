@@ -20,6 +20,9 @@ const userSchema = new Schema({
     },
     cart: {
         type: [String]
+    },
+    wishlist: {
+        type: [String]
     }
 })
 
