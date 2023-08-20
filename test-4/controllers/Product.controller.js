@@ -27,7 +27,7 @@ export const addProduct = async (req, res) => {
 
 export const allProducts = async (req, res) => {
     try {
-        const products = await ProductModal.find({});
+        const products = await ProductModal.find({ isBlocked: false, isVerified: true });
         if (products.length) {
             return res.status(200).json({ status: "Success", products: products })
         }
@@ -102,7 +102,7 @@ export const deleteYourProduct = async (req, res) => {
         if (isDeleted) {
             return res.status(200).json({ success: true, message: "Product Deleted Successfully." })
         }
-        
+
         throw new Error("Mongodb error")
 
     } catch (error) {
@@ -110,3 +110,18 @@ export const deleteYourProduct = async (req, res) => {
     }
 }
 
+
+export const addRating = async (req, res) => {
+    try {
+        const { productId, rating } = req.body;
+
+        const updatedProductRating = await ProductModal.findByIdAndUpdate(productId, { $push: { ratings: rating } }, { new: true })
+
+        if (updateYourProduct) {
+            return res.status(200).json({ success: true, message: "Rating added Successfully", product: updatedProductRating })
+        }
+        throw new Error("Mongodb error")
+    } catch (error) {
+        return res.status(500).json({ status: "error", error: error.message })
+    }
+}
