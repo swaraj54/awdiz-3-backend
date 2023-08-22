@@ -4,12 +4,13 @@ import jwt from "jsonwebtoken";
 
 export const Register = async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
-        if (!name || !email || !password || !role) return res.json({ status: "error", message: "All fields are mandtory.." })
+        const { userData } = req.body;
+        const { name, email, password, role } = userData;
+        if (!name || !email || !password || !role) return res.json({ success: false, message: "All fields are mandtory.." })
 
         const isEmailExist = await UserModal.find({ email: email })
         if (isEmailExist.length) {
-            return res.json({ status: "error", message: "Email is exist, try diffrent email." })
+            return res.json({ success: false, message: "Email is exist, try diffrent email." })
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
@@ -18,21 +19,21 @@ export const Register = async (req, res) => {
 
         await user.save();
 
-        return res.json({ status: "Success", message: "User registered Successfully." })
+        return res.json({ success: true, message: "User registered Successfully." })
 
     } catch (error) {
-        return res.json({ status: "error", message: error })
+        return res.json({ success: false, message: error })
     }
 }
 
 
 export const Login = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) return res.json({ status: "error", message: "All fields are mandtory.." })
+        const { email, password } = req.body.userData;
+        if (!email || !password) return res.json({ success: false, message: "All fields are mandtory.." })
 
         const user = await UserModal.findOne({ email })
-        if (!user) return res.json({ status: "error", message: "User not found.." })
+        if (!user) return res.json({success: false, message: "User not found.." })
 
         if (user.isBlocked) {
             return res.status(404).json({ success: false, message: "You are Blocked, Contact us." })
@@ -49,11 +50,11 @@ export const Login = async (req, res) => {
             }
             const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
             // console.log(token, "token her")
-            return res.json({ status: "Success", message: "Login Successfull.", user: userObeject, token: token })
+            return res.json({ success: true, message: "Login Successfull.", user: userObeject, token: token })
         }
-        return res.json({ status: "error", message: "Password is wrong." })
+        return res.json({ success: false, message: "Password is wrong." })
     } catch (error) {
-        return res.json({ status: "error", message: error })
+        return res.json({ success: false, message: error })
     }
 }
 

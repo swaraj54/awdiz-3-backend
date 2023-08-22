@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
+import cors from 'cors';
 import { Login, Register, getCurrentUser } from './controllers/User.controller.js';
 import { addProduct, addRating, allProducts, deleteYourProduct, getYourProducts, updateYourProduct } from './controllers/Product.controller.js';
 import { checkSeller, isAdmin, isValidUser } from './Middlewares/All.Middlewares.js';
@@ -10,6 +11,7 @@ import { blockProduct, blockUser, unBlockUser, unblockProduct, verifyProduct } f
 const app = express();
 app.use(express.json())
 dotenv.config();
+app.use(cors())
 
 
 app.get("/", (req, res) => {
@@ -28,7 +30,7 @@ app.get("/all-products", allProducts)
 
 //buyer 
 
-app.patch('/add-rating',isValidUser, addRating)
+app.patch('/add-rating', isValidUser, addRating)
 // app.patch('/add-comments',isValidUser, addComments) - assignemnt - {userId comment}
 app.post("/add-wishlist", addWishlist)
 app.get("/get-wishlist-products", getWishlistProducts)
