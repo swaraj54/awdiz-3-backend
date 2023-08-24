@@ -1,11 +1,13 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
+import { AuthContext } from './Context/AuthContext'
 
 const Register = () => {
     const [userData, setUserData] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer" })
 
+    const { state } = useContext(AuthContext)
     const router = useNavigate()
 
     const handleChange = (event) => {
@@ -37,6 +39,12 @@ const Register = () => {
     }
     // console.log(userData, "userData")
 
+    useEffect(() => {
+        if (state?.user?.name) {
+            router('/')
+        }
+    }, [state])
+
     return (
         <div>
             <h1>Register</h1>
@@ -56,7 +64,7 @@ const Register = () => {
                 <input type='password' onChange={handleChange} name='confirmPassword' value={userData.confirmPassword} /><br />
                 <input type='submit' value='Register' /><br />
             </form>
-            <button onClick={()=> router('/login')}>Login</button>
+            <button onClick={() => router('/login')}>Login</button>
         </div>
     )
 }
