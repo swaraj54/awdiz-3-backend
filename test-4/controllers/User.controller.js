@@ -46,7 +46,8 @@ export const Login = async (req, res) => {
             const userObeject = {
                 name: user.name,
                 email: user.email,
-                _id: user._id
+                _id: user._id,
+                role: user.role
             }
             const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
             // console.log(token, "token her")
@@ -81,7 +82,8 @@ export const getCurrentUser = async (req, res) => {
         const userObeject = {
             name: user?.name,
             email: user?.email,
-            _id: user?._id
+            _id: user?._id,
+            role: user?.role
         }
 
         return res.status(200).json({ success: true, user: userObeject })

@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv'
 import mongoose from 'mongoose';
 import cors from 'cors';
+import morgan from 'morgan';
 import { Login, Register, getCurrentUser } from './controllers/User.controller.js';
 import { addProduct, addRating, allProducts, deleteYourProduct, getYourProducts, updateYourProduct } from './controllers/Product.controller.js';
 import { checkSeller, isAdmin, isValidUser } from './Middlewares/All.Middlewares.js';
@@ -12,7 +13,7 @@ const app = express();
 app.use(express.json())
 dotenv.config();
 app.use(cors())
-
+app.use(morgan("dev"))
 
 app.get("/", (req, res) => {
     res.send("Wporking...")
@@ -43,7 +44,7 @@ app.get("/get-cart-products", getCartProducts)
 // sellers
 
 app.post('/add-product', checkSeller, addProduct)
-app.get("/get-your-products", checkSeller, getYourProducts)
+app.post("/get-your-products", checkSeller, getYourProducts)
 app.patch("/update-your-product", checkSeller, updateYourProduct)
 app.delete("/delete-your-product", checkSeller, deleteYourProduct)
 
