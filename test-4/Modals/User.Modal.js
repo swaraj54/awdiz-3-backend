@@ -5,6 +5,17 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    number: {
+        type: Number,
+        required: true
+    },
+    isNumberVerified: {
+        type: Boolean,
+        default: false
+    },
+    otpForNumberVerification: {
+        type: Number,
+    },
     email: {
         type: String,
         required: true

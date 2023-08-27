@@ -27,16 +27,16 @@ const HandleAuthContext = ({ children }) => {
         async function getCurrentUserData() {
             var token = JSON.parse(localStorage.getItem("token"));
             if (token) {
-                const response = await axios.post("http://localhost:8002/get-current-user", { token });
-                if (response.data.success) {
-                    dispatch({
-                        type: "LOGIN",
-                        payload: response.data.user
-                    })
-                } else {
-                    dispatch({
-                        type: "LOGOUT"
-                    });
+                try {
+                    const response = await axios.post("http://localhost:8002/get-current-user", { token });
+                    if (response.data.success) {
+                        dispatch({
+                            type: "LOGIN",
+                            payload: response.data.user
+                        })
+                    }
+                } catch (error) {
+                    console.log(error)
                 }
             }
 

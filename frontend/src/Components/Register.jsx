@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './Context/AuthContext'
 
 const Register = () => {
-    const [userData, setUserData] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer" })
+    const [userData, setUserData] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer", number: "" })
 
     const { state } = useContext(AuthContext)
     const router = useNavigate()
@@ -19,11 +19,11 @@ const Register = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        if (userData.name && userData.email && userData.password && userData.confirmPassword && userData.role) {
+        if (userData.name && userData.email && userData.password && userData.confirmPassword && userData.role && userData.number) {
             if (userData.password === userData.confirmPassword) {
                 const response = await axios.post("http://localhost:8002/register", { userData });
                 if (response.data.success) {
-                    setUserData({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer" })
+                    setUserData({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer", number: "" })
                     router('/login')
                     toast.success(response.data.message)
                 } else {
@@ -53,6 +53,8 @@ const Register = () => {
                 <input type='text' onChange={handleChange} name='name' value={userData.name} /><br />
                 <label>Email</label><br />
                 <input type='email' onChange={handleChange} name='email' value={userData.email} /><br />
+                <label>Contact Number</label><br />
+                <input type='number' onChange={handleChange} name='number' value={userData.number} /><br />
                 <label>Role</label><br />
                 <select onChange={handleChangeForSelect} >
                     <option value="Buyer">Buyer</option>
