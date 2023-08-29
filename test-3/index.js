@@ -105,16 +105,16 @@ app.listen(8001, () => {
 // const {state} = useContext(AuthContext);
 
 
-// const response = await axios.post("/register", { name, surname, age })
+// const response = await api.post("/register", { name, surname, age })
 // const { name, surname, age } = req.body
 
-// const response = await axios.post('/regiter/${state.user._id}') - frontend
+// const response = await api.post('/regiter/${state.user._id}') - frontend
 
 // app.post('/regiter/:id')
 // const { id } = req.params
 
 // req.query
 // const url = `/regiter/?name=${name}&surname=jadhav`
-// const response = await axios.post(url)\
+// const response = await api.post(url)\
 
 // const { name,surname } = req.params

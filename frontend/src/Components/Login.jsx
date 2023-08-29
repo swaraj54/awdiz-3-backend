@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { toast } from 'react-hot-toast'
-import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './Context/AuthContext'
+import api from './ApiConfig/index';
 
 
 const Login = () => {
@@ -18,18 +18,24 @@ const Login = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         if (userData.email && userData.password) {
-            const response = await axios.post("http://localhost:8002/login", { userData });
-            if (response.data.success) {
+            try {
+                const response = await api.post("/login", { userData });
+                if (response.data.success) {
+                    dispatch({
+                        type: 'LOGIN',
+                        payload: response.data.user
+                    })
+                    localStorage.setItem("token", JSON.stringify(response.data.token))
+                    setUserData({ email: "", password: "" })
+                    router('/')
+                    toast.success(response.data.message)
+                }
+            } catch (error) {
                 dispatch({
-                    type: 'LOGIN',
-                    payload: response.data.user
+                    type: 'LOGOUT'
                 })
-                localStorage.setItem("token", JSON.stringify(response.data.token))
-                setUserData({ email: "", password: "" })
-                router('/')
-                toast.success(response.data.message)
-            } else {
-                toast.error(response.data.message)
+                console.log(error, "error from backend")
+                toast.error(error.response.data.message)
             }
         } else {
             toast.error("All fields are mandtory.")

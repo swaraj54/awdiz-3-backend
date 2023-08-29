@@ -31,6 +31,7 @@ export const Register = async (req, res) => {
 export const Login = async (req, res) => {
     try {
         const { email, password } = req.body.userData;
+
         if (!email || !password) return res.json({ success: false, message: "All fields are mandtory.." })
 
         const user = await UserModal.findOne({ email })
@@ -50,7 +51,10 @@ export const Login = async (req, res) => {
                 _id: user._id,
                 role: user.role
             }
-            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET)
+            // console.log("Before ")
+            const expiryTime = user?.role == "Seller" ? "4h" : "1h";
+            // console.log(expiryTime, "expiryTime")
+            const token = jwt.sign({ userId: user._id }, process.env.JWT_SECRET, { expiresIn: expiryTime })
             // console.log(token, "token her")
             return res.json({ success: true, message: "Login Successfull.", user: userObeject, token: token })
         }

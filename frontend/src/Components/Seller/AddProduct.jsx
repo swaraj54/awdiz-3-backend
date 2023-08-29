@@ -4,6 +4,7 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './../Context/AuthContext'
+import api from '../ApiConfig';
 
 const AddProduct = () => {
     const [productData, setProductData] = useState({ name: "", price: "", image: "", category: "" })
@@ -20,7 +21,7 @@ const AddProduct = () => {
         if (productData.name && productData.price && productData.image && productData.category) {
             const token = JSON.parse(localStorage.getItem("token"))
             try {
-                const response = await axios.post("http://localhost:8002/add-product", { token, productData });
+                const response = await api.post("http://localhost:8002/add-product", { token, productData });
                 if (response.data.success) {
                     setProductData({ name: "", price: "", image: "", category: "" })
                     router('/your-products')

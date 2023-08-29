@@ -3,6 +3,7 @@ import { toast } from 'react-hot-toast'
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './Context/AuthContext'
+import api from './ApiConfig'
 
 const Register = () => {
     const [userData, setUserData] = useState({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer", number: "" })
@@ -21,7 +22,7 @@ const Register = () => {
         event.preventDefault();
         if (userData.name && userData.email && userData.password && userData.confirmPassword && userData.role && userData.number) {
             if (userData.password === userData.confirmPassword) {
-                const response = await axios.post("http://localhost:8002/register", { userData });
+                const response = await api.post("http://localhost:8002/register", { userData });
                 if (response.data.success) {
                     setUserData({ name: "", email: "", password: "", confirmPassword: "", role: "Buyer", number: "" })
                     router('/login')

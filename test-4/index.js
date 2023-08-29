@@ -8,6 +8,7 @@ import { addProduct, addRating, allProducts, deleteYourProduct, getYourProducts,
 import { checkSeller, isAdmin, isValidUser } from './Middlewares/All.Middlewares.js';
 import { addCart, addWishlist, getCartProducts, getWishlistProducts } from './controllers/Buyer.controllers.js';
 import { blockProduct, blockUser, unBlockUser, unblockProduct, verifyProduct } from './controllers/Admin.controllers.js';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 app.use(express.json())
@@ -19,6 +20,33 @@ app.get("/", (req, res) => {
     res.send("Wporking...")
 })
 
+function checkJwt(req, res, next) {
+    const fullToken = req.headers.authorization
+    if (fullToken) {
+        const token = fullToken.split(" ")[1];
+        if (token) {
+            try {
+                // console.log(token, "token at middleware")
+                const decoededData = jwt.verify(token, process.env.JWT_SECRET);
+
+                const expTime = decoededData?.exp;
+                const currentTimestamp = Math.floor(Date.now() / 1000);
+                console.log(expTime, currentTimestamp, "expTime at middleware")
+                if (currentTimestamp > expTime) {
+                    return res.status(404).json({ success: false, message: "Session is over, Please login again." })
+                }
+                next();
+            } catch (error) {
+                console.log(error, "after error at exp")
+                return res.status(500).json({ success: false, message: "Token is expired." })
+
+            }
+        }
+        next();
+    }
+    next();
+}
+
 // all
 
 app.post("/register", Register)
@@ -27,7 +55,7 @@ app.post("/login", Login)
 
 app.post('/get-current-user', getCurrentUser)
 
-app.get("/all-products", allProducts)
+app.get("/all-products", checkJwt, allProducts)
 
 app.post("/get-number", getNumber)
 

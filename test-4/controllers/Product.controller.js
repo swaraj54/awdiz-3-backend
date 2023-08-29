@@ -28,14 +28,21 @@ export const addProduct = async (req, res) => {
 
 export const allProducts = async (req, res) => {
     try {
-        const products = await ProductModal.find({ isBlocked: false, isVerified: true });
+        // console.log(req.headers.authorization, "headers")
+        // const fullToken = req.headers.authorization
+        // console.log(fullToken, "- fullToken")
+        // const token = fullToken.split(" ")[1]
+        // console.log(token, "- token here")
+        // const products = await ProductModal.find({ isBlocked: false, isVerified: true });
+        const products = await ProductModal.find({});
+        console.log(products, "products")
         if (products.length) {
-            return res.status(200).json({ status: "Success", products: products })
+            return res.status(200).json({ success: true, products: products })
         }
-        return res.status(404).json({ status: "error", message: "No products found" })
+        return res.status(404).json({ success: false, message: "No products found" })
 
     } catch (error) {
-        return res.status(500).json({ status: "error", error: error.message })
+        return res.status(500).json({ success: false, error: error.message })
     }
 }
 
