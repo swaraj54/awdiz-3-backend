@@ -19,7 +19,7 @@ const Login = () => {
         event.preventDefault();
         if (userData.email && userData.password) {
             try {
-                const response = await api.post("/login", { userData });
+                const response = await api.post("/all/login", { userData });
                 if (response.data.success) {
                     dispatch({
                         type: 'LOGIN',

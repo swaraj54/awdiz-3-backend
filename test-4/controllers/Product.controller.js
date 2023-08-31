@@ -35,13 +35,14 @@ export const allProducts = async (req, res) => {
         // console.log(token, "- token here")
         // const products = await ProductModal.find({ isBlocked: false, isVerified: true });
         const products = await ProductModal.find({});
-        console.log(products, "products")
+        // console.log(products, "products")
         if (products.length) {
             return res.status(200).json({ success: true, products: products })
         }
         return res.status(404).json({ success: false, message: "No products found" })
 
     } catch (error) {
+        console.log(error,"error in all product")
         return res.status(500).json({ success: false, error: error.message })
     }
 }

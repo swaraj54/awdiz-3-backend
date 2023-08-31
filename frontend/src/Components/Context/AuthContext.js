@@ -29,7 +29,7 @@ const HandleAuthContext = ({ children }) => {
             var token = JSON.parse(localStorage.getItem("token"));
             if (token) {
                 try {
-                    const response = await api.post("http://localhost:8002/get-current-user", { token });
+                    const response = await api.post("/all/get-current-user", { token });
                     if (response.data.success) {
                         dispatch({
                             type: "LOGIN",
@@ -37,10 +37,7 @@ const HandleAuthContext = ({ children }) => {
                         })
                     }
                 } catch (error) {
-                    dispatch({
-                        type: 'LOGOUT'
-                    })
-                    console.log(error)
+                    console.log(error,"error in current user")
                 }
             }
 

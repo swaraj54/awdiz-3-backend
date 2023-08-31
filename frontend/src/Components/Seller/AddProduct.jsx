@@ -21,7 +21,7 @@ const AddProduct = () => {
         if (productData.name && productData.price && productData.image && productData.category) {
             const token = JSON.parse(localStorage.getItem("token"))
             try {
-                const response = await api.post("http://localhost:8002/add-product", { token, productData });
+                const response = await api.post("/seller/add-product", { token, productData });
                 if (response.data.success) {
                     setProductData({ name: "", price: "", image: "", category: "" })
                     router('/your-products')
