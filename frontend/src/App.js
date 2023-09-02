@@ -10,6 +10,8 @@ import AddProduct from './Components/Seller/AddProduct';
 import YourProducts from './Components/Seller/YourProducts';
 import Profile from './Components/Profile';
 import Allproducts from './Components/Common/Allproducts';
+import SinglePorduct from './Components/Buyer/SinglePorduct';
+import Cart from './Components/Buyer/Cart';
 
 function App() {
   const { state } = useContext(AuthContext);
@@ -26,6 +28,8 @@ function App() {
         <Route exact path='/profile' element={<Profile />} />
 
         <Route exact path='/all-products' element={<Allproducts />} />
+        <Route exact path='/single-products/:id' element={<SinglePorduct />} />
+        <Route exact path='/cart' element={<Cart />} />
 
       </Routes>
     </div>
