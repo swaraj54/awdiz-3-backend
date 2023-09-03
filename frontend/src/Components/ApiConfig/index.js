@@ -5,12 +5,12 @@ const token = JSON.parse(localStorage.getItem("token"))
 
 if (token) {
     var api = axios.create({
-        baseURL: 'http://localhost:8002/api/v1',
+        baseURL: 'https://awdiz-3-backend.onrender.com/api/v1',
         headers: { 'Authorization': `Bearer ${token}` }
     })
 } else {
     var api = axios.create({
-        baseURL: 'http://localhost:8002/api/v1'
+        baseURL: 'https://awdiz-3-backend.onrender.com/api/v1'
     })
 }
 
